@@ -1,6 +1,6 @@
-using BloodDonationSystem.Application.Interfaces;
-using BloodDonationSystem.Application.Services.Implementation;
+using BloodDonationSystem.Application.Command.DonorCreate;
 using BloodDonationSystem.Infrastructure.Persistence;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,9 +16,8 @@ var connectionString = builder.Configuration.GetConnectionString("BlookBankSyste
 
 builder.Services.AddDbContext<BloodDonationDbContext>(s => s.UseSqlServer(connectionString));
 
-builder.Services.AddScoped<IBloodStock, BloodStockService>();
-builder.Services.AddScoped<IDonation, DonationService>();
-builder.Services.AddScoped<IDonor, DonorService>();
+builder.Services.AddMediatR(typeof(DonorCreateCommand));
+
 
 var app = builder.Build();
 

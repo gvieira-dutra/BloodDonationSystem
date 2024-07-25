@@ -1,32 +1,34 @@
-﻿using BloodDonationSystem.Application.Interfaces;
-using BloodDonationSystem.Core.Entities;
+﻿using BloodDonationSystem.Application.Command.DonationCreate;
+using BloodDonationSystem.Application.Query.DonationGetRecent;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BloodDonationSystemAPI.Controllers
 {
     [Route("api/donation")]
-    public class DonationController(IDonation donation) : ControllerBase
+    public class DonationController(IMediator mediator) : ControllerBase
     {
-        private readonly IDonation _donation = donation;
+        private readonly IMediator _mediator = mediator;
 
         [HttpPost]
-        public IActionResult Post([FromBody] DonationInputModel newDonation)
+        public async Task<IActionResult> Post([FromBody] DonationCreateCommand command)
         {
-            if (newDonation == null)
+            if (command == null)
             {
                 return BadRequest();
             }
 
-            _donation.CreateOne(newDonation);
+            await _mediator.Send(command);
 
-            return Ok(newDonation);
-
+            return Ok(command);
         }
 
         [HttpGet("recent")]
-        public IActionResult GetRecent()
+        public async Task<IActionResult> GetRecent()
         {
-            var donations = _donation.GetRecent();
+            var command = new DonationGetRecentQuery();
+
+            var donations = await _mediator.Send(command);
 
             return Ok(donations);
         }

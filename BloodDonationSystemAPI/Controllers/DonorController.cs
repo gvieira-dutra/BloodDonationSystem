@@ -1,37 +1,39 @@
-﻿using BloodDonationSystem.Application.Interfaces;
+﻿using BloodDonationSystem.Application.Command.DonorCreate;
+using BloodDonationSystem.Application.Query.DonorGetAll;
+using BloodDonationSystem.Application.Query.DonorGetOne;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BloodDonationSystemAPI.Controllers
 {
     [Route("api/donor")]
-    public class DonorController(IDonor donor) : ControllerBase
+    public class DonorController(IMediator mediator) : ControllerBase
     {
-        private readonly IDonor _donor = donor;
+        private readonly IMediator _mediator = mediator;
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var donor = _donor.GetAll();
-            return Ok(donor);
+            var command = new DonorGetAllQuery();
+            var donors = await _mediator.Send(command);
+
+            return Ok(donors);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetOne(int id)
+        public async Task<IActionResult> GetOne(int id)
         {
-            var donor = _donor.GetOne(id);
+            var command = new DonorGetOneQuery(id);
+
+            var donor = await _mediator.Send(command);
             return Ok(donor);
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] DonorInputModel newDonor)
+        public async Task<IActionResult> Post([FromBody] DonorCreateCommand command)
         {
-            if (newDonor == null)
-            {
-                return BadRequest();
-            }
+            var id = await _mediator.Send(command);
 
-            var donor = _donor.Post(newDonor);
-
-            return CreatedAtAction(nameof(GetOne), new { id = donor.Id }, donor);
+            return CreatedAtAction(nameof(GetOne), new { id }, command);
         }
     }
 }

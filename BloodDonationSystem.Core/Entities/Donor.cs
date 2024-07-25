@@ -14,10 +14,12 @@ public class Donor(string fullName, string email, DateTime doB, string gender, d
     public int AddressId { get; private set; } = addressId;
     public Address Address { get; private set; }
 
-    public void SetAddressId(int id)
+    public void SetDonations(List<Donation> donations)
     {
-        AddressId = id;
+        Donations = donations;
     }
+
+    
 }
 
 

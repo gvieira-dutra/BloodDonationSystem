@@ -1,17 +1,21 @@
-﻿using BloodDonationSystem.Application.Interfaces;
+﻿using BloodDonationSystem.Application.Query.BloodStockGetAll;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BloodDonationSystemAPI.Controllers
 {
     [Route("api/stock")]
-    public class BloodStockController(IBloodStock bloodStock) : ControllerBase
+    public class BloodStockController(IMediator mediator) : ControllerBase
     {
-        private readonly IBloodStock _bloodStock = bloodStock;
+        private readonly IMediator _mediator = mediator;
+
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var bloodStock = _bloodStock.GetAll();
+            var command = new BloodStockGetAllQuery();
+
+            var bloodStock = await _mediator.Send(command);
             return Ok(bloodStock);
         }
 
