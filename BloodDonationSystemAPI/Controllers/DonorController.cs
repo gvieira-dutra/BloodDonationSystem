@@ -1,4 +1,6 @@
 ﻿using BloodDonationSystem.Application.Command.DonorCreate;
+using BloodDonationSystem.Application.Command.DonorDelete;
+using BloodDonationSystem.Application.Command.DonorPut;
 using BloodDonationSystem.Application.Query.DonorGetAll;
 using BloodDonationSystem.Application.Query.DonorGetOne;
 using MediatR;
@@ -10,6 +12,7 @@ namespace BloodDonationSystemAPI.Controllers
     public class DonorController(IMediator mediator) : ControllerBase
     {
         private readonly IMediator _mediator = mediator;
+
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -28,12 +31,30 @@ namespace BloodDonationSystemAPI.Controllers
             return Ok(donor);
         }
 
+        [HttpPut("update/{id}")]
+        public async Task<IActionResult> Put(int id, [FromBody] DonorPutCommand command)
+        {
+            var updatedDonor = await _mediator.Send(command);
+
+            return Ok(updatedDonor);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] DonorCreateCommand command)
         {
             var id = await _mediator.Send(command);
 
             return CreatedAtAction(nameof(GetOne), new { id }, command);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var command = new DonorDeleteCommand(id);
+
+            await _mediator.Send(command);
+
+            return NoContent();
         }
     }
 }

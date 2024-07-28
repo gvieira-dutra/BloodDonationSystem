@@ -1,4 +1,5 @@
-﻿using BloodDonationSystem.Application.Query.BloodStockGetAll;
+﻿using BloodDonationSystem.Application.Command.BookStockPut;
+using BloodDonationSystem.Application.Query.BloodStockGetAll;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,7 +10,6 @@ namespace BloodDonationSystemAPI.Controllers
     {
         private readonly IMediator _mediator = mediator;
 
-
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -19,5 +19,12 @@ namespace BloodDonationSystemAPI.Controllers
             return Ok(bloodStock);
         }
 
+        [HttpPut]
+        public async Task<IActionResult> Put([FromBody] BloodStockPutCommand command)
+        {
+            var bloodStock = await _mediator.Send(command);
+
+            return Ok(bloodStock);
+        }
     }
 }

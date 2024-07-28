@@ -2,13 +2,13 @@
 
 namespace BloodDonationSystem.Core.Entities
 {
-    public class BloodStock(BloodTypeEnum bloodType, RhFactorEnum rhFactor, int quantity) : BaseEntity
+    public class BloodStock(BloodTypeEnum bloodType, RhFactorEnum rhFactor, int quantity, int id) : BaseEntity(id)
     {
         public BloodTypeEnum BloodType { get; private set; } = bloodType;
-        public RhFactorEnum RhFactor { get; private set; } = rhFactor;
         public int Quantity { get; private set; } = quantity;
+        public RhFactorEnum RhFactor { get; private set; } = rhFactor;
 
-        public void updateQuantity(int qty)
+        public void UpdateStock(int qty)
         {
             Quantity += qty;
         }

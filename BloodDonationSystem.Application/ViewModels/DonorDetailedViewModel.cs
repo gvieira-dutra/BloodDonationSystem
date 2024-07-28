@@ -13,10 +13,10 @@ namespace BloodDonationSystem.Application.ViewModels
         public double Weight { get; private set; } = weight;
         public BloodTypeEnum BloodType { get; private set; } = bloodType;
         public RhFactorEnum RhFactor { get; private set; } = rhFactor;
-        public List<Donation> Donations { get; private set; } = new List<Donation>();
+        public List<DonationViewModel> Donations { get; private set; } = new List<DonationViewModel>();
         public Address Address { get; private set; } = address;
 
-        public void SetDonations(List<Donation> donations)
+        public void SetDonations(List<DonationViewModel> donations)
         {
             Donations = donations;
         }

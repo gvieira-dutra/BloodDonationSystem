@@ -1,6 +1,6 @@
 ﻿using BloodDonationSystem.Core.Entities;
 
-public class Address(string street, string city, string province, string postalCode) : BaseEntity
+public class Address(string street, string city, string province, string postalCode, int id) : BaseEntity(id)
 {
     public string Street { get; private set; } = street;
     public string City { get; private set; } = city;

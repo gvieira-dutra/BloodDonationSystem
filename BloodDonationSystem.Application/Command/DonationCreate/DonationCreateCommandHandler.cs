@@ -17,23 +17,23 @@ namespace BloodDonationSystem.Application.Command.DonationCreate
 
         public async Task<int> Handle(DonationCreateCommand request, CancellationToken cancellationToken)
         {
-
             var donor = await _dbContext.Donors.FirstOrDefaultAsync(a => a.Id == request.DonorId);
             var donations = _dbContext.Donations;
 
             var bloodStock = await _dbContext.BloodStocks.FirstOrDefaultAsync(a => a.RhFactor == donor.RhFactor && a.BloodType == donor.BloodType);
 
-            var donation = new Donation(request.DonorId, request.Quantity);
+            var donation = new Donation(request.DonorId, request.Quantity, 0);
 
             donor.Donations.Add(donation);
 
             donations.Add(donation);
 
-            bloodStock.updateQuantity(request.Quantity);
+            bloodStock.UpdateStock(request.Quantity);
 
-            var donationViewModel = new DonationViewModel(
+            var donationViewModel = new DonationDetailViewModel(
+                donation.Id,
                 DateTime.Now,
-                request.Quantity,
+                donation.Quantity,
                 donor.FullName,
                 donor.Email,
                 donor.BloodType,
