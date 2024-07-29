@@ -1,39 +1,25 @@
-﻿using BloodDonationSystem.Application.ViewModels;
-using BloodDonationSystem.Infrastructure.Persistence;
+﻿using BloodDonationSystem.Core.DTO;
+using BloodDonationSystem.Core.Repository;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace BloodDonationSystem.Application.Query.DonationGetRecent
 {
 
-    public class DonationGetRecentQueryHandler : IRequestHandler<DonationGetRecentQuery, List<DonationDetailViewModel>>
+    public class DonationGetRecentQueryHandler : IRequestHandler<DonationGetRecentQuery, List<DonationDetailDTO>>
     {
 
-        private readonly BloodDonationDbContext _dbContext;
+        private readonly IDonationRepository _donationRepo;
 
-        public DonationGetRecentQueryHandler(BloodDonationDbContext dbContext)
+        public DonationGetRecentQueryHandler(IDonationRepository donationRepo)
         {
-            _dbContext = dbContext;
+            _donationRepo = donationRepo;
         }
 
-        public async Task<List<DonationDetailViewModel>> Handle(DonationGetRecentQuery request, CancellationToken cancellationToken)
+        public async Task<List<DonationDetailDTO>> Handle(DonationGetRecentQuery request, CancellationToken cancellationToken)
         {
-            var donations = await _dbContext.Donations
-              .Where(a => a.DonationDate >= DateTime.Now.AddDays(-7) && a.IsActive == true)
-              .Include(d => d.Donor)
-              .ToListAsync(cancellationToken);
+            var donations = await _donationRepo.DonationGetRecent();
 
-            var donationsViewModel = donations.Select(donation => new DonationDetailViewModel(
-                donation.Id, 
-                donation.DonationDate, 
-                donation.Quantity, 
-                donation.Donor.FullName, 
-                donation.Donor.Email, 
-                donation.Donor.BloodType, 
-                donation.Donor.RhFactor))
-                .ToList();
-
-            return donationsViewModel;
+            return donations;
         }
     }
 }

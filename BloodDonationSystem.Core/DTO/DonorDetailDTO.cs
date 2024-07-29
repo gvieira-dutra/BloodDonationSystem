@@ -1,8 +1,8 @@
 ﻿using BloodDonationSystem.Core.Enum;
 
-namespace BloodDonationSystem.Application.ViewModels
+namespace BloodDonationSystem.Core.DTO
 {
-    public class DonorDetailViewModel(string fullName, string email, DateTime doB, string gender, double weight, BloodTypeEnum bloodType, RhFactorEnum rhFactor, Address address)
+    public class DonorDetailDTO(string fullName, string email, DateTime doB, string gender, double weight, BloodTypeEnum bloodType, RhFactorEnum rhFactor, Address address)
     {
         public string FullName { get; private set; } = fullName;
         public string Email { get; private set; } = email;
@@ -12,10 +12,10 @@ namespace BloodDonationSystem.Application.ViewModels
         public double Weight { get; private set; } = weight;
         public BloodTypeEnum BloodType { get; private set; } = bloodType;
         public RhFactorEnum RhFactor { get; private set; } = rhFactor;
-        public List<DonationViewModel> Donations { get; private set; } = new List<DonationViewModel>();
+        public List<DonationDTO> Donations { get; private set; } = new List<DonationDTO>();
         public Address Address { get; private set; } = address;
 
-        public void SetDonations(List<DonationViewModel> donations)
+        public void SetDonations(List<DonationDTO> donations)
         {
             Donations = donations;
         }
@@ -25,7 +25,7 @@ namespace BloodDonationSystem.Application.ViewModels
             var lastDonation = Donations.LastOrDefault();
             Status = "Clear to donate!";
 
-            if (Weight < 110) { Status = "Cannot donate! Must be over 110lb to donate."; } 
+            if (Weight < 110) { Status = "Cannot donate! Must be over 110lb to donate."; }
 
             if (DoB > DateTime.Now.AddYears(-18)) { Status = "Cannot donate! Must be over 18 to donate."; }
 

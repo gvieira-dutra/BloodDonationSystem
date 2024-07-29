@@ -1,77 +1,24 @@
-﻿using BloodDonationSystem.Application.ViewModels;
-using BloodDonationSystem.Core.Entities;
-using BloodDonationSystem.Infrastructure.Persistence;
+﻿using BloodDonationSystem.Core.Entities;
+using BloodDonationSystem.Core.Repository;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace BloodDonationSystem.Application.Command.DonationCreate
 {
     public class DonationCreateCommandHandler : IRequestHandler<DonationCreateCommand, int>
     {
-        private readonly BloodDonationDbContext _dbContext;
+        private readonly IDonationRepository _donationRepo;
 
-        public DonationCreateCommandHandler(BloodDonationDbContext dbContext)
+        public DonationCreateCommandHandler(IDonationRepository donationRepo)
         {
-            _dbContext = dbContext;
+            _donationRepo = donationRepo;
         }
 
         public async Task<int> Handle(DonationCreateCommand request, CancellationToken cancellationToken)
         {
-            var donor = await _dbContext.Donors.FirstOrDefaultAsync(a => a.Id == request.DonorId);
-            var donations = _dbContext.Donations;
+            var newDonation = new Donation(request.DonorId, request.Quantity, 0);
 
-            var bloodStock = await _dbContext.BloodStocks.FirstOrDefaultAsync(a => a.RhFactor == donor.RhFactor && a.BloodType == donor.BloodType);
-
-            var donation = new Donation(request.DonorId, request.Quantity, 0);
-
-            donor.Donations.Add(donation);
-
-            donations.Add(donation);
-
-            bloodStock.UpdateStock(request.Quantity);
-
-            var donationViewModel = new DonationDetailViewModel(
-                donation.Id,
-                DateTime.Now,
-                donation.Quantity,
-                donor.FullName,
-                donor.Email,
-                donor.BloodType,
-                donor.RhFactor
-                );
-
-            await _dbContext.SaveChangesAsync();
-
-            return donor.Id;
+            return await _donationRepo.CreateDonation(newDonation);
         }
 
-        //async Task<int> IRequestHandler<DonationCreateCommand, int>.Handle(DonationCreateCommand request, CancellationToken cancellationToken)
-        //{
-        //    var donor = await _dbContext.Donors.FirstOrDefaultAsync(a => a.Id == request.DonorId);
-        //    var donations = _dbContext.Donations;
-
-        //    var bloodStock = await _dbContext.BloodStocks.FirstOrDefaultAsync(a => a.RhFactor == donor.RhFactor && a.BloodType == donor.BloodType);
-
-        //    var donation = new Donation(request.DonorId, request.Quantity);
-
-        //    donor.Donations.Add(donation);
-
-        //    donations.Add(donation);
-
-        //    bloodStock.updateQuantity(request.Quantity);
-
-        //    var donationViewModel = new DonationViewModel(
-        //        DateTime.Now,
-        //        request.Quantity,
-        //        donor.FullName,
-        //        donor.Email,
-        //        donor.BloodType,
-        //        donor.RhFactor
-        //        );
-
-        //    await _dbContext.SaveChangesAsync();
-
-        //    return donor.Id;
-        //}
     }
 }

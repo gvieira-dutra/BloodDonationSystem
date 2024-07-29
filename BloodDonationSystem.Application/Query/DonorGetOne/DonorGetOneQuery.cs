@@ -1,9 +1,10 @@
 ﻿using BloodDonationSystem.Application.ViewModels;
+using BloodDonationSystem.Core.DTO;
 using MediatR;
 
 namespace BloodDonationSystem.Application.Query.DonorGetOne
 {
-    public class DonorGetOneQuery : IRequest<DonorDetailViewModel>
+    public class DonorGetOneQuery : IRequest<DonorDetailDTO>
     {
         public int Id { get; private set; }
 

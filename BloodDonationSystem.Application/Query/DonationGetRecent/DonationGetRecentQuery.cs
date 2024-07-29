@@ -1,9 +1,9 @@
-﻿using BloodDonationSystem.Application.ViewModels;
+﻿using BloodDonationSystem.Core.DTO;
 using MediatR;
 
 namespace BloodDonationSystem.Application.Query.DonationGetRecent
 {
-    public class DonationGetRecentQuery : IRequest<List<DonationDetailViewModel>>
+    public class DonationGetRecentQuery : IRequest<List<DonationDetailDTO>>
     {
     }
 }

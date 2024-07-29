@@ -1,51 +1,32 @@
 ﻿using BloodDonationSystem.Application.ViewModels;
-using BloodDonationSystem.Infrastructure.Persistence;
+using BloodDonationSystem.Core.DTO;
+using BloodDonationSystem.Core.Repository;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace BloodDonationSystem.Application.Command.DonorPut
 {
-    public class DonorPutCommandHandler : IRequestHandler<DonorPutCommand, DonorViewModel>
+    public class DonorPutCommandHandler : IRequestHandler<DonorPutCommand, DonorDTO>
     {
-        private readonly BloodDonationDbContext _dbContext;
+        private readonly IDonorRepository _donorRepo;
 
-        public DonorPutCommandHandler(BloodDonationDbContext dbContext)
+        public DonorPutCommandHandler(IDonorRepository donorRepo)
         {
-            _dbContext = dbContext;
+            _donorRepo = donorRepo;
         }
 
-        public async Task<DonorViewModel> Handle(DonorPutCommand request, CancellationToken cancellationToken)
+        public async Task<DonorDTO> Handle(DonorPutCommand request, CancellationToken cancellationToken)
         {
-            var donor = await _dbContext.Donors
-                .Where(d => d.Id == request.Id)
-                .FirstOrDefaultAsync(cancellationToken);
+            var newInfo = new DonorUpdateDTO(
+                request.Id,
+                request.FullName,
+                request.Email,
+                request.DoB,
+                request.Gender,
+                request.Weight,
+                request.BloodType,
+                request.RhFactor);
 
-            if (donor != null)
-            {
-                donor.UpdateDonorInfo(
-                    request.FullName,
-                    request.Email, 
-                    request.DoB, 
-                    request.Gender, 
-                    request.Weight, 
-                    request.BloodType, 
-                    request.RhFactor);
-
-                await _dbContext.SaveChangesAsync();
-
-            var donorDetailVM = new DonorViewModel(
-                donor.Id, 
-                donor.FullName, 
-                donor.Email, 
-                donor.Gender, 
-                donor.BloodType, 
-                donor.RhFactor
-                );
-                
-                return donorDetailVM;
-            }
-
-            return null;
+            return await _donorRepo.DonorUpdate(newInfo, cancellationToken);
         }
     }
 }

@@ -1,29 +1,27 @@
 ﻿using BloodDonationSystem.Application.ViewModels;
 using BloodDonationSystem.Infrastructure.Persistence;
+using BloodDonationSystem.Core.DTO;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using BloodDonationSystem.Core.Repository;
 
 namespace BloodDonationSystem.Application.Query.BloodStockGetAll
 {
-    public class BloodStockGetAllQueryHandler : IRequestHandler<BloodStockGetAllQuery, List<BloodStockViewModel>>
+    public class BloodStockGetAllQueryHandler : IRequestHandler<BloodStockGetAllQuery, List<BloodStockDTO>>
     {
 
-        private readonly BloodDonationDbContext _dbContext;
+        private readonly IBloodStockRepository _bloodStockRepo;
 
-        public BloodStockGetAllQueryHandler(BloodDonationDbContext dbContext)
+        public BloodStockGetAllQueryHandler(IBloodStockRepository bloodStockRepo)
         {
-            _dbContext = dbContext;
+            _bloodStockRepo = bloodStockRepo;
         }
 
-        public async Task<List<BloodStockViewModel>> Handle(BloodStockGetAllQuery request, CancellationToken cancellationToken)
+        public async Task<List<BloodStockDTO>> Handle(BloodStockGetAllQuery request, CancellationToken cancellationToken)
         {          
-                var stock = _dbContext.BloodStocks;
+                var stock = await _bloodStockRepo.GetAllBloodStock();
 
-                var bloodStockViewModel = await stock
-                    .Select(s => new BloodStockViewModel(s.BloodType, s.RhFactor, s.Quantity)).ToListAsync();
-
-                return bloodStockViewModel;
-            
+                return stock;            
         }
     }
 }

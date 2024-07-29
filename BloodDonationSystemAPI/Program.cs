@@ -1,5 +1,7 @@
 using BloodDonationSystem.Application.Command.DonorCreate;
+using BloodDonationSystem.Core.Repository;
 using BloodDonationSystem.Infrastructure.Persistence;
+using BloodDonationSystem.Infrastructure.Persistence.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +17,9 @@ builder.Services.AddSwaggerGen();
 var connectionString = builder.Configuration.GetConnectionString("BlookBankSystemCs");
 
 builder.Services.AddDbContext<BloodDonationDbContext>(s => s.UseSqlServer(connectionString));
+builder.Services.AddScoped<IBloodStockRepository, BloodStockRepository>();
+builder.Services.AddScoped<IDonationRepository, DonationRepository>();
+builder.Services.AddScoped<IDonorRepository, DonorRepository>();
 
 builder.Services.AddMediatR(typeof(DonorCreateCommand));
 

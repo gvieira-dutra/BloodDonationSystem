@@ -1,12 +1,10 @@
-﻿using BloodDonationSystem.Application.ViewModels;
-using BloodDonationSystem.Core.DTO;
-using BloodDonationSystem.Core.Enum;
-using MediatR;
+﻿using BloodDonationSystem.Core.Enum;
 
-namespace BloodDonationSystem.Application.Command.DonorPut
+namespace BloodDonationSystem.Core.DTO
 {
-    public class DonorPutCommand(int id, string fullName, string email, DateTime doB, string gender, double weight, BloodTypeEnum bloodType, RhFactorEnum rhFactor) : IRequest<DonorDTO>
-    {
+
+    public class DonorUpdateDTO(int id, string fullName, string email, DateTime doB, string gender, double weight, BloodTypeEnum bloodType, RhFactorEnum rhFactor)
+        {
         public int Id { get; set; } = id;
         public string FullName { get; private set; } = fullName;
         public string Email { get; private set; } = email;

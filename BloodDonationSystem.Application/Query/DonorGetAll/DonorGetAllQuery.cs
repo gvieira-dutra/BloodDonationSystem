@@ -1,10 +1,10 @@
 ﻿
-using BloodDonationSystem.Application.ViewModels;
+using BloodDonationSystem.Core.DTO;
 using MediatR;
 
 namespace BloodDonationSystem.Application.Query.DonorGetAll
 {
-    public class DonorGetAllQuery : IRequest<List<DonorViewModel>>
+    public class DonorGetAllQuery : IRequest<List<DonorDTO>>
     {
     }
 }

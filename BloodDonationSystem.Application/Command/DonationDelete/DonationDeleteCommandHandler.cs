@@ -1,39 +1,19 @@
-﻿using BloodDonationSystem.Infrastructure.Persistence;
+﻿using BloodDonationSystem.Core.Repository;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace BloodDonationSystem.Application.Command.DonationDelete
 {
     public class DonationDeleteCommandHandler : IRequestHandler<DonationDeleteCommand, Unit>
     {
-        private readonly BloodDonationDbContext _dbContext;
+        private readonly IDonationRepository _donationRepo;
 
-        public DonationDeleteCommandHandler(BloodDonationDbContext dbContext)
+        public DonationDeleteCommandHandler(IDonationRepository donationRepo)
         {
-            _dbContext = dbContext;
+            _donationRepo = donationRepo;
         }
         public async Task<Unit> Handle(DonationDeleteCommand request, CancellationToken cancellationToken)
         {
-            var donation = await _dbContext.Donations
-                .Where(d => d.Id == request.Id)
-                .FirstOrDefaultAsync(cancellationToken);
-
-            var donor = await _dbContext.Donors
-                .Where(d => d.Id == donation.DonorId)
-                .FirstOrDefaultAsync(cancellationToken);
-
-            var typeToUpdate = await _dbContext.BloodStocks
-                .Where(s => s.BloodType == donor.BloodType && s.RhFactor == donor.RhFactor)
-                .FirstOrDefaultAsync(cancellationToken);
-
-            if (donation != null)
-            {
-                donation.DeleteDonation();
-
-                typeToUpdate.UpdateStock(- donation.Quantity);
-
-                await _dbContext.SaveChangesAsync();
-            }
+            await _donationRepo.DeleteDonation(request.Id, cancellationToken);
 
             return Unit.Value;
         }

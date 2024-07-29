@@ -1,45 +1,21 @@
-﻿using BloodDonationSystem.Application.ViewModels;
-using BloodDonationSystem.Core.Entities;
-using BloodDonationSystem.Infrastructure.Persistence;
+﻿using BloodDonationSystem.Core.DTO;
+using BloodDonationSystem.Core.Repository;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace BloodDonationSystem.Application.Query.DonorGetOne
 {
-    public class DonorGetOneQueryHandler : IRequestHandler<DonorGetOneQuery, DonorDetailViewModel>
+    public class DonorGetOneQueryHandler : IRequestHandler<DonorGetOneQuery, DonorDetailDTO>
     {
-        private readonly BloodDonationDbContext _dbContext;
+        private readonly IDonorRepository _donorRepo;
 
-        public DonorGetOneQueryHandler(BloodDonationDbContext dbContext)
+        public DonorGetOneQueryHandler(IDonorRepository donorRepo)
         {
-            _dbContext = dbContext;
+            _donorRepo = donorRepo;
         }
 
-        public async Task<DonorDetailViewModel> Handle(DonorGetOneQuery request, CancellationToken cancellationToken)
+        public async Task<DonorDetailDTO> Handle(DonorGetOneQuery request, CancellationToken cancellationToken)
         {
-            var donations = await _dbContext.Donations
-                .Where(d => d.DonorId == request.Id)
-                .Select(d => new DonationViewModel(d.Id, d.DonationDate, d.Quantity))
-                .ToListAsync(cancellationToken);
-
-            var donor = await _dbContext.Donors
-                .Include(a => a.Address)
-                .FirstOrDefaultAsync(a => a.Id == request.Id);
-
-            var donorVM = new DonorDetailViewModel(
-                donor.FullName, 
-                donor.Email, 
-                donor.DoB, 
-                donor.Gender, 
-                donor.Weight, 
-                donor.BloodType, 
-                donor.RhFactor, 
-                donor.Address);
-
-            donorVM.SetDonations(donations);
-            donorVM.SetStatus();
-
-            return donorVM;
+            return await _donorRepo.DonorGetOne(request.Id, cancellationToken);
         }
     }
 }
