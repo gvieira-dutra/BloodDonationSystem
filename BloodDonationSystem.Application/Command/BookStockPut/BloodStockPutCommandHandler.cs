@@ -1,12 +1,11 @@
-﻿using BloodDonationSystem.Application.ViewModels;
+﻿using BloodDonationSystem.Core.DTO;
 using BloodDonationSystem.Core.Repository;
 using BloodDonationSystem.Infrastructure.Persistence;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace BloodDonationSystem.Application.Command.BookStockPut
 {
-    public class BloodStockPutCommandHandler : IRequestHandler<BloodStockPutCommand, BloodStockViewModel>
+    public class BloodStockPutCommandHandler : IRequestHandler<BloodStockPutCommand, BloodStockDTO>
     {
         private readonly IBloodStockRepository _bloodRepository;
 
@@ -15,7 +14,7 @@ namespace BloodDonationSystem.Application.Command.BookStockPut
             _bloodRepository = bloodRepository;
         }
 
-        public async Task<BloodStockViewModel> Handle(BloodStockPutCommand request, CancellationToken cancellationToken)
+        public async Task<BloodStockDTO> Handle(BloodStockPutCommand request, CancellationToken cancellationToken)
         {
             var stockToBeUpdated = await _bloodRepository.GetOneBloodType(request.Id);
 
@@ -25,7 +24,7 @@ namespace BloodDonationSystem.Application.Command.BookStockPut
 
                 await _bloodRepository.SaveChangesOnDb();
 
-                var updatedStockVM = new BloodStockViewModel(
+                var updatedStockVM = new BloodStockDTO(
                     stockToBeUpdated.BloodType,
                     stockToBeUpdated.RhFactor,
                     stockToBeUpdated.Quantity);

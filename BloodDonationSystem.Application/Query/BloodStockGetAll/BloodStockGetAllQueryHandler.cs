@@ -1,5 +1,4 @@
-﻿using BloodDonationSystem.Application.ViewModels;
-using BloodDonationSystem.Infrastructure.Persistence;
+﻿using BloodDonationSystem.Infrastructure.Persistence;
 using BloodDonationSystem.Core.DTO;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

@@ -17,7 +17,7 @@ namespace BloodDonationSystem.Infrastructure.Persistence.Repositories
         public async Task<List<DonationDetailDTO>> DonationGetRecent()
         {
             var donations = await _dbContext.Donations
-              .Where(a => a.DonationDate >= DateTime.Now.AddDays(-7) && a.IsActive == true)
+              .Where(a => a.DonationDate >= DateTime.Now.AddDays(-30) && a.IsActive == true)
               .Include(d => d.Donor)
               .ToListAsync();
 

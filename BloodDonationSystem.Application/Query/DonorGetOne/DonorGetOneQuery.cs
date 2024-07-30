@@ -1,5 +1,4 @@
-﻿using BloodDonationSystem.Application.ViewModels;
-using BloodDonationSystem.Core.DTO;
+﻿using BloodDonationSystem.Core.DTO;
 using MediatR;
 
 namespace BloodDonationSystem.Application.Query.DonorGetOne
