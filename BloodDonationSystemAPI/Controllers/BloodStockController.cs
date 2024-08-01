@@ -1,6 +1,7 @@
 ﻿using BloodDonationSystem.Application.Command.BookStockPut;
 using BloodDonationSystem.Application.Query.BloodStockGetAll;
 using BloodDonationSystem.Core.DTO;
+using BloodDonationSystem.Infrastructure.Configurations.Service;
 using FastReport.Export.PdfSimple;
 using FastReport.Web;
 using MediatR;
@@ -32,7 +33,7 @@ namespace BloodDonationSystemAPI.Controllers
             return Ok(bloodStock);
         }
 
-        [Route("ReportPDF")]
+        [Route("pdfReport")]
         [HttpGet]
         public async Task<ActionResult<List<BloodStockDTO>>> GetReportPDF()
         {

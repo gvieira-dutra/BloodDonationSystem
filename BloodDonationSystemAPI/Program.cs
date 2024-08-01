@@ -7,9 +7,11 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation.AspNetCore;
 using FluentValidation;
-using FastReport;
 using BloodDonationSystemAPI.Filters;
 using FastReport.Data;
+using BloodDonationSystem.Infrastructure.MailService.Configurations;
+using BloodDonationSystem.Infrastructure.Configurations.Service;
+using BloodDonationSystem.Infrastructure.MailService.Service;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,6 +31,8 @@ builder.Services.AddScoped<IBloodStockRepository, BloodStockRepository>();
 builder.Services.AddScoped<IDonationRepository, DonationRepository>();
 builder.Services.AddScoped<IDonorRepository, DonorRepository>();
 
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
+
 FastReport.Utils.RegisteredObjects.AddConnection(typeof(MsSqlDataConnection));
 
 builder.Services.AddMediatR(typeof(DonorCreateCommand));
@@ -36,6 +40,7 @@ builder.Services.AddMediatR(typeof(DonorCreateCommand));
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<DonationPutCommandValidator>();
 
+builder.Services.AddTransient<IMailService, MailService>();
 
 var app = builder.Build();
 

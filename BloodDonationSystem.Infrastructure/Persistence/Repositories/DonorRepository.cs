@@ -23,7 +23,7 @@ namespace BloodDonationSystem.Infrastructure.Persistence.Repositories
                 donor.Email, 
                 donor.Gender, 
                 donor.BloodType, 
-                donor.RhFactor)
+                donor.RhFactor))
             .ToListAsync(cancellationToken);
 
             return donors;
