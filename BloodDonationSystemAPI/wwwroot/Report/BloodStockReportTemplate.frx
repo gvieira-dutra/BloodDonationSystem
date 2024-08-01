@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="07/31/2024 10:49:10" ReportInfo.Modified="07/31/2024 11:55:35" ReportInfo.CreatorVersion="2024.2.0.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqAFHGp6KQj27H4qUwAIR20mOA1OiLCaG+eZfAj+q6jrB0FARn6dEjkzQ+j4oaIOqdhAvJvjnXmtCDjwVJyJUvUxiavusnNuE/MJ+TlgxEtSnOrV5Yqjb7wVc8hhq/ReKqOeGPOHI/fyXPu26EvO1qniAAuESJ0FJ2Akev2GGaM5Z5DYyWqKSjQsiByYat2h7GQmIab74sZ6QKKlIaHU5ltQ==">
+		<TableDataSource Name="BloodStocks" DataType="System.String" Enabled="true" TableName="BloodStocks">
+			<Column Name="Id" DataType="System.Int32"/>
+			<Column Name="BloodType" DataType="System.String"/>
+			<Column Name="RhFactor" DataType="System.String"/>
+			<Column Name="Quantity" DataType="System.Int32"/>
+		</TableDataSource>
+
+	</MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1" Guides="585.9" Watermark.Font="Arial, 60pt">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="56.7" Fill.Color="LightGray" Guides="47.25">
+      <TextObject Name="Text1" Left="13.45" Top="9.45" Width="378" Height="37.8" Text="Blood Bank Stock Report" Font="Arial, 20pt, style=Bold"/>
+      <TextObject Name="Text2" Left="557.55" Top="18.9" Width="94.5" Height="18.9" Text="[Date]" Font="Arial, 10pt"/>
+      <TextObject Name="Text9" Left="453.6" Top="18.9" Width="94.5" Height="18.9" Fill.Color="LightGray" Text="Report Date" HorzAlign="Right" Font="Arial, 10pt"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="60.7" Width="718.2" Height="28.35" Fill.Color="WhiteSmoke">
+      <TextObject Name="Text4" Left="18.9" Top="5" Width="94.5" Height="18.9" Text="BloodType" Font="Arial, 10pt"/>
+      <TextObject Name="Text6" Left="226.8" Top="5" Width="94.5" Height="18.9" Text="RhFactor" Font="Arial, 10pt"/>
+      <TextObject Name="Text8" Left="463.05" Top="5" Width="122.85" Height="18.9" Text="Quantity Available" Font="Arial, 10pt"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="93.05" Width="718.2" Height="56.7" DataSource="BloodStocks">
+      <TextObject Name="Text3" Left="36.8" Top="18.9" Width="94.5" Height="18.9" Text="[BloodStocks.BloodType]" Font="Arial, 10pt"/>
+      <TextObject Name="Text5" Left="226.8" Top="18.9" Width="94.5" Height="18.9" Text="[BloodStocks.RhFactor]" Font="Arial, 10pt"/>
+      <TextObject Name="Text7" Left="415.8" Top="18.9" Width="94.5" Height="18.9" Text="[BloodStocks.Quantity]" HorzAlign="Right" Font="Arial, 10pt"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="153.75" Width="718.2" Height="18.9"/>
+  </ReportPage>
+</Report>

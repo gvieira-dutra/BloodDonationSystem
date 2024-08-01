@@ -1,5 +1,4 @@
-﻿using BloodDonationSystem.Core.Enum;
-using MediatR;
+﻿using MediatR;
 
 namespace BloodDonationSystem.Application.Command.DonorCreate
 {
@@ -10,8 +9,8 @@ namespace BloodDonationSystem.Application.Command.DonorCreate
             public DateTime DoB { get; set; }
             public string Gender { get; set; }
             public double Weight { get; set; }
-            public BloodTypeEnum BloodType { get; set; }
-            public RhFactorEnum RhFactor { get; set; }
+            public string BloodType { get; set; }
+            public string RhFactor { get; set; }
             public AddressInputModel Address { get; set; }
 
         public class AddressInputModel

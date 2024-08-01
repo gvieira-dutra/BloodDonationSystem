@@ -1,8 +1,7 @@
-﻿using BloodDonationSystem.Core.Enum;
-
+﻿
 namespace BloodDonationSystem.Core.DTO
 {
-    public class DonorDetailDTO(string fullName, string email, DateTime doB, string gender, double weight, BloodTypeEnum bloodType, RhFactorEnum rhFactor, Address address)
+    public class DonorDetailDTO(string fullName, string email, DateTime doB, string gender, double weight, string bloodType, string rhFactor, Address address)
     {
         public string FullName { get; private set; } = fullName;
         public string Email { get; private set; } = email;
@@ -10,8 +9,8 @@ namespace BloodDonationSystem.Core.DTO
         public DateTime DoB { get; private set; } = doB;
         public string Gender { get; private set; } = gender;
         public double Weight { get; private set; } = weight;
-        public BloodTypeEnum BloodType { get; private set; } = bloodType;
-        public RhFactorEnum RhFactor { get; private set; } = rhFactor;
+        public string BloodType { get; private set; } = bloodType;
+        public string RhFactor { get; private set; } = rhFactor;
         public List<DonationDTO> Donations { get; private set; } = new List<DonationDTO>();
         public Address Address { get; private set; } = address;
 

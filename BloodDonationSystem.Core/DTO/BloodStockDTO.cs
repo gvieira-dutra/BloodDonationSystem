@@ -1,17 +1,16 @@
-﻿using BloodDonationSystem.Core.Enum;
-namespace BloodDonationSystem.Core.DTO
+﻿namespace BloodDonationSystem.Core.DTO
 {
     public class BloodStockDTO
     {
-        public BloodStockDTO(BloodTypeEnum bloodType, RhFactorEnum rhFactor, int quantity)
+        public BloodStockDTO(string bloodType, string rhFactor, int quantity)
         {
             BloodType = bloodType;
             RhFactor = rhFactor;
             Quantity = quantity;
         }
 
-        public BloodTypeEnum BloodType { get; private set; }
-        public RhFactorEnum RhFactor { get; private set; }
+        public string BloodType { get; private set; }
+        public string RhFactor { get; private set; }
         public int Quantity { get; private set; }
     }
 }

@@ -7,7 +7,10 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation.AspNetCore;
 using FluentValidation;
+using FastReport;
 using BloodDonationSystemAPI.Filters;
+using FastReport.Data;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,11 +23,13 @@ builder.Services.AddSwaggerGen();
 
 var connectionString = builder.Configuration.GetConnectionString("BlookBankSystemCs");
 
-
+builder.Services.AddFastReport();
 builder.Services.AddDbContext<BloodDonationDbContext>(s => s.UseSqlServer(connectionString));
 builder.Services.AddScoped<IBloodStockRepository, BloodStockRepository>();
 builder.Services.AddScoped<IDonationRepository, DonationRepository>();
 builder.Services.AddScoped<IDonorRepository, DonorRepository>();
+
+FastReport.Utils.RegisteredObjects.AddConnection(typeof(MsSqlDataConnection));
 
 builder.Services.AddMediatR(typeof(DonorCreateCommand));
 
@@ -43,7 +48,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseStaticFiles();
+
 app.UseAuthorization();
+
+app.UseFastReport();
 
 app.MapControllers();
 

@@ -1,5 +1,4 @@
-﻿
-using BloodDonationSystem.Core.Entities;
+﻿using BloodDonationSystem.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

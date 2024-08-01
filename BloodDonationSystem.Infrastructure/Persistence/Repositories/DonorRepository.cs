@@ -17,7 +17,13 @@ namespace BloodDonationSystem.Infrastructure.Persistence.Repositories
         {
             var donors = await _dbContext.Donors
             .Where(d => d.IsActive == true)
-            .Select(donor => new DonorDTO(donor.Id, donor.FullName, donor.Email, donor.Gender, donor.BloodType, donor.RhFactor))
+            .Select(donor => new DonorDTO(
+                donor.Id, 
+                donor.FullName, 
+                donor.Email, 
+                donor.Gender, 
+                donor.BloodType, 
+                donor.RhFactor)
             .ToListAsync(cancellationToken);
 
             return donors;
