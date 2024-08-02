@@ -1,5 +1,6 @@
 ﻿using BloodDonationSystem.Application.Command.DonorCreate;
 using BloodDonationSystem.Infrastructure.Persistence;
+using BloodDonationSystem.Infrastructure.PostalCodeService.Service;
 using FluentValidation;
 
 namespace BloodDonationSystem.Application.Validators
@@ -7,10 +8,13 @@ namespace BloodDonationSystem.Application.Validators
     public class DonorCreateCommandValidator : AbstractValidator<DonorCreateCommand>
     {
         private readonly BloodDonationDbContext _dbContext;
+        private readonly IPostalCodeService _postalCodeService;
+
         public DonorCreateCommandValidator(BloodDonationDbContext
-            dbContext)
+            dbContext, IPostalCodeService postalCodeService)
         {
             _dbContext = dbContext;
+            _postalCodeService = postalCodeService;
 
             RuleFor(x => x.FullName)
                 .NotNull().WithMessage("ERROR! Name cannot be empty")
@@ -30,7 +34,7 @@ namespace BloodDonationSystem.Application.Validators
             RuleFor(x => x.Gender)
                 .NotNull().WithMessage("ERROR! Gender cannot be empty")
                 .NotEmpty().WithMessage("ERROR! Gender cannot be empty")
-                .Must(g => 
+                .Must(g =>
                 string.Equals(g, "male", StringComparison.OrdinalIgnoreCase) ||
                 string.Equals(g, "female", StringComparison.OrdinalIgnoreCase
                 ))
@@ -40,6 +44,12 @@ namespace BloodDonationSystem.Application.Validators
                 .NotNull().WithMessage("ERROR! Weight cannot be empty")
                 .NotEmpty().WithMessage("ERROR! Weight cannot be empty")
                 .GreaterThan(10).WithMessage("ERROR! Must have at least 10lb to register.");
+
+            RuleFor(x => x.Address.PostalCode)
+                .NotNull().WithMessage("ERROR! Weight cannot be empty")
+                .NotEmpty().WithMessage("ERROR! Weight cannot be empty")
+                .Must(_postalCodeService.CheckFormat).WithMessage("Postal Code Format Invalid!");
+
         }
         private bool BeUniqueEmail(string email)
         {

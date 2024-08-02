@@ -12,6 +12,8 @@ using FastReport.Data;
 using BloodDonationSystem.Infrastructure.MailService.Configurations;
 using BloodDonationSystem.Infrastructure.Configurations.Service;
 using BloodDonationSystem.Infrastructure.MailService.Service;
+using BloodDonationSystem.Infrastructure.PostalCodeService.PostalCodeSettings;
+using BloodDonationSystem.Infrastructure.PostalCodeService.Service;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -32,6 +34,7 @@ builder.Services.AddScoped<IDonationRepository, DonationRepository>();
 builder.Services.AddScoped<IDonorRepository, DonorRepository>();
 
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
+builder.Services.Configure<PostalCodeSetUp>(builder.Configuration.GetSection("PostalCodeSetting"));
 
 FastReport.Utils.RegisteredObjects.AddConnection(typeof(MsSqlDataConnection));
 
@@ -41,6 +44,7 @@ builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<DonationPutCommandValidator>();
 
 builder.Services.AddTransient<IMailService, MailService>();
+builder.Services.AddScoped<IPostalCodeService, PostalCodeService>();
 
 var app = builder.Build();
 
