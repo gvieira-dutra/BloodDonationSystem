@@ -34,7 +34,7 @@ builder.Services.AddScoped<IDonationRepository, DonationRepository>();
 builder.Services.AddScoped<IDonorRepository, DonorRepository>();
 
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
-builder.Services.Configure<PostalCodeSetUp>(builder.Configuration.GetSection("PostalCodeSetting"));
+builder.Services.Configure<PostalCodeSetUp>(builder.Configuration.GetSection("PostalCodeSetUp"));
 
 FastReport.Utils.RegisteredObjects.AddConnection(typeof(MsSqlDataConnection));
 
