@@ -18,15 +18,13 @@ namespace BloodDonationSystem.Application.Command.DonorCreate
         {
             var address = new Address(request.Address.Street, request.Address.City, request.Address.Province, request.Address.PostalCode, 0);
 
-            var isPostalCodeValid = await _postalCodeService.CheckPostalCodeAPI(request.Address.PostalCode);
-            if (!isPostalCodeValid)
-            {
-                throw new ValidationException("Postal Code does not match Canada Postal Code Database.");
-            }
+            await _postalCodeService.CheckPostalCodeAPI(request.Address.PostalCode);
 
-            var donor = new Donor(request.FullName, request.Email, request.DoB, request.Gender, request.Weight, request.BloodType, request.RhFactor, address.Id, 0);
+            var addressId = await _donorRepo.AddressCreate(address, cancellationToken);
 
-            return await _donorRepo.DonorCreate(donor, address, cancellationToken);
+            var donor = new Donor(request.FullName, request.Email, request.DoB, request.Gender, request.Weight, request.BloodType, request.RhFactor, addressId, 0);
+
+            return await _donorRepo.DonorCreate(donor, cancellationToken);
         }
     }
 }

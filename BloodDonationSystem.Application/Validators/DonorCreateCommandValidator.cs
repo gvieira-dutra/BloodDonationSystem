@@ -48,7 +48,7 @@ namespace BloodDonationSystem.Application.Validators
             RuleFor(x => x.Address.PostalCode)
                 .NotNull().WithMessage("ERROR! Weight cannot be empty")
                 .NotEmpty().WithMessage("ERROR! Weight cannot be empty")
-                .Must(_postalCodeService.CheckFormat).WithMessage("Postal Code Format Invalid!");
+                .Must(_postalCodeService.CheckFormat).WithMessage("ERROR! Postal Code Format Invalid!");
 
         }
         private bool BeUniqueEmail(string email)

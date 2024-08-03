@@ -7,7 +7,8 @@ namespace BloodDonationSystem.Core.Repository
         Task<List<DonorDTO>> DonorGetAll(CancellationToken cancellationToken);
         Task<DonorDetailDTO> DonorGetOne(int id, CancellationToken cancellationToken);
 
-        Task<int> DonorCreate(Donor newDonor, Address newAddress, CancellationToken cancellationToken);
+        Task<int> DonorCreate(Donor newDonor, CancellationToken cancellationToken);
+        Task<int> AddressCreate(Address newAddress, CancellationToken cancellationToken);
         Task DonorDelete(int id, CancellationToken cancellationToken);
         Task<DonorDTO> DonorUpdate(DonorUpdateDTO newInfo, CancellationToken cancellation);
 

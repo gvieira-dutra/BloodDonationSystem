@@ -56,15 +56,21 @@ namespace BloodDonationSystem.Infrastructure.Persistence.Repositories
             return donorVM; 
         }
 
-        public async Task<int> DonorCreate(Donor newDonor, Address newAddress, CancellationToken cancellationToken)
-        {
-            await _dbContext.Addresses.AddAsync(newAddress);
-            await SaveDbChanges(cancellationToken);
+        public async Task<int> DonorCreate(Donor newDonor, CancellationToken cancellationToken)
+        {           
 
             await _dbContext.Donors.AddAsync(newDonor);
             await SaveDbChanges(cancellationToken);
 
             return newDonor.Id;
+        }
+
+        public async Task<int> AddressCreate(Address newAddress, CancellationToken cancellationToken)
+        {
+            await _dbContext.Addresses.AddAsync(newAddress);
+            await SaveDbChanges(cancellationToken);
+        
+            return newAddress.Id;
         }
 
         public async Task DonorDelete(int id, CancellationToken cancellationToken)

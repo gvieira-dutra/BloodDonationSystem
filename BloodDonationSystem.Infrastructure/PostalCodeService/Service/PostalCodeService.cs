@@ -1,6 +1,6 @@
 ﻿using BloodDonationSystem.Infrastructure.PostalCodeService.PostalCodeSettings;
-using MailKit;
 using Microsoft.Extensions.Options;
+using System.ComponentModel.DataAnnotations;
 using System.Net.Http.Json;
 using System.Text.RegularExpressions;
 
@@ -10,9 +10,10 @@ namespace BloodDonationSystem.Infrastructure.PostalCodeService.Service
     {
         private readonly HttpClient _client;
         private readonly PostalCodeSetUp _postalCodeSetUp;
-        public PostalCodeService(IOptions<PostalCodeSetUp> options)
+        public PostalCodeService(IOptions<PostalCodeSetUp> options, IHttpClientFactory factory)
         {
             _postalCodeSetUp = options.Value;
+            _client = factory.CreateClient("PCVerifier");
         }
 
         public bool CheckFormat(string postalCode)
@@ -26,27 +27,18 @@ namespace BloodDonationSystem.Infrastructure.PostalCodeService.Service
 
         public async Task<bool> CheckPostalCodeAPI(string postalCode)
         {
+            var returnHTTPClient = new PostalCodeConsultationReturn();
             var url = $"https://api.zipcodestack.com/v1/search?codes={postalCode}&country=ca&apikey={_postalCodeSetUp.APIKey}";
+            try
+            {
+                returnHTTPClient = await _client.GetFromJsonAsync<PostalCodeConsultationReturn>(url);
+            }
+            catch (Exception ex)
+            {
+                throw new ValidationException("Postal Code does not match Canada Postal Code Database.");
+            }
 
-            var returnHTTPClient = await _client.GetFromJsonAsync<PostalCodeConsultationReturn>(url);
-
-            return false;
+            return returnHTTPClient.Results.Count() > 0;
         }
     }
 }
-
-//{
-//    "fullName": "string",
-//  "email": "string@mail.com",
-//  "doB": "2024-08-02T11:32:14.942Z",
-//  "gender": "male",
-//  "weight": 40,
-//  "bloodType": "string",
-//  "rhFactor": "string",
-//  "address": {
-//        "street": "string",
-//    "city": "string",
-//    "province": "string",
-//    "postalCode": "m4y1r5"
-//  }
-//}

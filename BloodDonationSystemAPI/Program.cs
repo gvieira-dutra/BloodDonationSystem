@@ -21,9 +21,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers(option => option.Filters.Add(typeof(ValidationFilter)));
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddHttpClient<IPostalCodeService, PostalCodeService>();
 
 var connectionString = builder.Configuration.GetConnectionString("BlookBankSystemCs");
 
@@ -43,7 +45,7 @@ builder.Services.AddMediatR(typeof(DonorCreateCommand));
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<DonationPutCommandValidator>();
 
-builder.Services.AddTransient<IMailService, MailService>();
+builder.Services.AddScoped<IMailService, MailService>();
 builder.Services.AddScoped<IPostalCodeService, PostalCodeService>();
 
 var app = builder.Build();
