@@ -26,12 +26,5 @@ public class Donor(string fullName, string email, DateTime doB, string gender, d
         Weight = weight;
         BloodType = bloodType;
         RhFactor = rhFactor;
-
-    }
-    
-
-    
-    
+    } 
 }
-
-

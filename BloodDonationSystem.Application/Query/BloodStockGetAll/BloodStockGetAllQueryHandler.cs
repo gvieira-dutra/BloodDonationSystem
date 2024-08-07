@@ -1,7 +1,5 @@
-﻿using BloodDonationSystem.Infrastructure.Persistence;
-using BloodDonationSystem.Core.DTO;
+﻿using BloodDonationSystem.Core.DTO;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using BloodDonationSystem.Core.Repository;
 
 namespace BloodDonationSystem.Application.Query.BloodStockGetAll
